@@ -33,7 +33,7 @@ http.createServer(function (request, response) {
             console.log("Data after decoding: " + JSON.stringify(msg.entity));
 
             if (client.connected === true){
-                client.publish("TestTopic", JSON.stringify(msg.entity), function(error) {
+                client.publish("gtfs-rt", JSON.stringify(msg.entity), function(error) {
                     console.log("Publishing.");
                     if (error) {
                         console.log('Error happened when publishing: ' + error);
