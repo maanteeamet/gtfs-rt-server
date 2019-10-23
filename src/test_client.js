@@ -2,7 +2,7 @@
 let request = require('request');
 let path = require('path');
 let fs = require('fs');
-let filename = '../gtfs-rt-server/TripUpdates.pb';
+let filename = '../gtfs-rt-server/VehiclePositions.pb';
 let target = 'http://localhost:3333/upload/' + path.basename(filename);
 
 let rs = fs.createReadStream(filename);

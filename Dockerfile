@@ -14,7 +14,15 @@ RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 
+ARG MQTTCLIENTPASS='sHalLnoTpaSS'
+
+#overrun when running docker package (-e)
+ENV \
+    MQTTCLIENTURL='mqtt://localhost:1883'\
+    MQTTCLIENTUSER='publisher'\
+    MQTTCLIENTPASS=${MQTTCLIENTPASS}
+
 # Bundle app source
 COPY . .
 
-CMD node src/server.js
+CMD npm start -- $MQTTCLIENTURL $MQTTCLIENTUSER $MQTTCLIENTPASS

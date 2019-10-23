@@ -7,12 +7,19 @@
     "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "mqtt",
+    "mosca"
+  ],
+  "author": "Dolmit",
   "license": "ISC",
   "dependencies": {
     "gtfs-realtime-bindings": "0.0.5",
     "protobufjs": "^6.8.8",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "mosca": "^2.8.3",
+    "mqtt": "^2.18.8",
+    "mqtt-ws": "^0.2.0",
+    "ws": "^6.2.1"
   }
 }
