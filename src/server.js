@@ -13,8 +13,8 @@ let mqttClient =
         password: mqttClientPassword
     };
 
-let client  = mqtt.connect(mqttClient);
 let serverPort = 3333;
+let client  = mqtt.connect(mqttClient);
 
 http.createServer(function (request, response) {
     response.write('Server is started.');

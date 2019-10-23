@@ -1,23 +1,15 @@
-## Run on Docker
+#### Run on Docker
 
-### Prerequisites
-Docker 1.9
-On Mac and Windows use Docker toolbox
+This is a node js service for currently reading data from file () and publishing decoded data to localhost mqtt (https://github.com/maanteeamet/mosquitto-server) broker on port 1883 which is described in Dockerfile.
 
-### Build a new docker image
-- `docker build -t name/gtfs .`
+to build and run: available --build-arg:
 
-### Run 
-- `docker run -p 8080:3333 name/gtfs`
+MQTTCLIENTPASS - should be same as mosquitto-server password
 
-## Access running application
-On Linux:
-- open `http://localhost:3333`
+`docker build -t gtfs/estonia --build-arg MQTTCLIENTPASS='newPassword' -f Dockerfile .`
 
-On Mac:
-- run `docker-machine env default`
-- see IP of `DOCKER_HOST`
-- open `http://[DOCKER_HOST]:3333`
+`docker run -p 8080:3333 name/gtfs`
 
-On Windows:
-- open `http://localhost:3333`
+should be run after mosquitto-server
+
+For sending file data to server for decoding, use postman or node src/test_client.js
