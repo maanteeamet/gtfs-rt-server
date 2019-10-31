@@ -14,7 +14,7 @@ class Rt_data_sync {
   }
 
   syncOtpAndGtfs(decodedGtfsData) {
-    console.log('Syncing Tallinn RT data to mqtt client ' + this.clientUrl);
+    console.log('Syncing OTP RT data to mqtt client ' + this.clientUrl);
     new otp_match.OtpClient(this.handlePublish, {mqttClient: this.mqttClient}, this.otpUrl).connect(decodedGtfsData);
   };
 
@@ -24,6 +24,8 @@ class Rt_data_sync {
     args.mqttClient.publish(topic, JSON.stringify(message), function (err) {
       if (err) {
         console.log('Error happened when publishing: ' + err);
+      } else {
+        console.log("Publish was successful with topic: " + topic);
       }
     });
   };
