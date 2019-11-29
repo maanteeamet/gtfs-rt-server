@@ -1,9 +1,8 @@
 (function () {
-  let OtpClient;
 
   const request = require('request');
 
-  OtpClient = class OtpClient {
+  module.exports.OtpClient = class OtpClient {
     constructor(callback, args, otpUrl) {
       this.callback = callback;
       this.args = args;
@@ -78,8 +77,6 @@
     }
 
   };
-
-  module.exports.OtpClient = OtpClient;
 
 }).call(this);
   
