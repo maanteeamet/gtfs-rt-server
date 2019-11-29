@@ -10,6 +10,6 @@ OTPURL - environment based OTPURL + /routing/v1/routers/estonia/index/graphql ex
 
 `docker build -t gtfs/estonia --build-arg MQTTCLIENTPASS='newPassword' -f Dockerfile .`
 
-`docker run -p 8080:3333 name/gtfs`
+`docker run -p 8080:3333 gtfs/estonia`
 
 Should be run after mosquitto-server.
