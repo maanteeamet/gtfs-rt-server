@@ -7,32 +7,32 @@ let mqttClientUser = args[1] || 'publisher';
 let mqttClientPassword = args[2];
 let otpurl = args[3];
 let mqttClient =
-    {
-        url: mqttClientUrl,
-        username: mqttClientUser,
-        password: mqttClientPassword
-    };
+  {
+    url: mqttClientUrl,
+    username: mqttClientUser,
+    password: mqttClientPassword
+  };
 
 let sync = new rt.rt_data_sync(mqttClient, otpurl);
 let serverPort = 3333;
 
 http.createServer(function (request, response) {
-    response.write('Server is running.');
-    response.end();
+  response.write('Server is running.');
+  response.end();
 
-    if ("POST" === request.method) {
-        // Get all post data when receive data event.
-        let data = []; // List of Buffer objects
-        request.on('error', (err) => {
-            console.error(err);
-        }).on('data', (chunk) => {
-            data.push(chunk); // Append Buffer object
-        }).on('end', () => {
-            data = Buffer.concat(data);
-            let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
-            sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
-        });
-    }
+  if ("POST" === request.method) {
+    // Get all post data when receive data event.
+    let data = []; // List of Buffer objects
+    request.on('error', (err) => {
+      console.error(err);
+    }).on('data', (chunk) => {
+      data.push(chunk); // Append Buffer object
+    }).on('end', () => {
+      data = Buffer.concat(data);
+      let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
+      sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
+    });
+  }
 }).listen(serverPort);
 
 

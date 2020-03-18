@@ -19,7 +19,7 @@
       let bodyJson = {json: {query: '{ routes ( name: "' + info.id + '" ) { shortName gtfsId mode agency { name id } } }'}};
       request.post(this.otpUrl, bodyJson, (error, res, body) => {
         let self = this;
-        if (error) {
+        if (error || !body.data) {
           console.error(error);
           return
         }

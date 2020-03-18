@@ -40,7 +40,7 @@
     let direction_id = msg.trip.direction;
     let start_time = msg.trip.start_time;
     let next_stop;   //not available from current resources
-    return `/${prefix}/${version}/${journey_type}/${temporal_type}/${event_type}/${transport_mode}/${operator_id}/${vehicle_number}/${route_id}/${direction_id}/${headsign}/${start_time}/${next_stop}/` + geohash;
+    return `/${prefix}/${version}/${journey_type}/${temporal_type}/${transport_mode}/${operator_id}/${vehicle_number}/${route_id}/${direction_id}/${headsign}/${start_time}/${next_stop}/` + geohash;
   };
 
   to_mqtt_payload = function(msg) {
