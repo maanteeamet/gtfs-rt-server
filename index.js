@@ -15,7 +15,7 @@ let mqttClient =
 
 let sync = new rt.rt_data_sync(mqttClient, otpurl);
 let serverPort = 3333;
-
+console.log('starting server');
 http.createServer(function (request, response) {
   var start = new Date();
   response.write('Server is running.');
