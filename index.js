@@ -23,7 +23,6 @@ http.createServer(function (request, response) {
   console.log(request, 'length: ' + (new Date() - start));
 
   if ("POST" === request.method) {
-    console.log('Someone is posting', request);
     // Get all post data when receive data event.
     let data = []; // List of Buffer objects
     request.on('error', (err) => {
@@ -34,7 +33,7 @@ http.createServer(function (request, response) {
     }).on('end', () => {
       data = Buffer.concat(data);
       console.log('Posting length: ' + (new Date() - start));
-      console.log('converting and publishing data');
+      console.log('converting and publishing data. data size: ' + data.length);
       let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
       sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
       console.log('converting and publishing finished')
