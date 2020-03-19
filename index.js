@@ -17,20 +17,27 @@ let sync = new rt.rt_data_sync(mqttClient, otpurl);
 let serverPort = 3333;
 
 http.createServer(function (request, response) {
+  var start = new Date();
   response.write('Server is running.');
   response.end();
+  console.log(request, 'length: ' + (new Date() - start));
 
   if ("POST" === request.method) {
+    console.log('Someone is posting', request);
     // Get all post data when receive data event.
     let data = []; // List of Buffer objects
     request.on('error', (err) => {
       console.error(err);
     }).on('data', (chunk) => {
+      start = new Date();
       data.push(chunk); // Append Buffer object
     }).on('end', () => {
       data = Buffer.concat(data);
+      console.log('Posting length: ' + (new Date() - start));
+      console.log('converting and publishing data');
       let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
       sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
+      console.log('converting and publishing finished')
     });
   }
 }).listen(serverPort);
