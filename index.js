@@ -20,7 +20,7 @@ http.createServer(function (request, response) {
   var start = new Date();
   response.write('Server is running.');
   response.end();
-  console.log(request, 'length: ' + (new Date() - start));
+  console.log('Get length: ' + (new Date() - start));
 
   if ("POST" === request.method) {
     // Get all post data when receive data event.
