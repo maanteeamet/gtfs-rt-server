@@ -37,19 +37,22 @@ function logging(request, requestStart) {
 console.log('starting server');
 http.createServer(function (request, response) {
   var start = new Date();
-  response.write('Server is running.');
-  response.end();
-  logging(request, start);
 
-  if ("POST" === request.method) {
+  if ('GET' === request.method) {
+    response.write('Server is running.');
+    response.end();
+    logging(request, start);
+  } else if ("POST" === request.method) {
     // Get all post data when receive data event.
     let data = []; // List of Buffer objects
     request.on('error', (err) => {
       console.error(err);
-    }).on('data', (chunk) => {
+    });
+    request.on('data', (chunk) => {
       start = new Date();
       data.push(chunk); // Append Buffer object
-    }).on('end', () => {
+    });
+    request.on('end', () => {
       data = Buffer.concat(data);
       let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
       sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
