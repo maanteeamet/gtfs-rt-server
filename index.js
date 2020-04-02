@@ -54,9 +54,17 @@ http.createServer(function (request, response) {
     });
     request.on('end', () => {
       data = Buffer.concat(data);
-      let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
-      sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
-      logging(request, start);
+      try {
+        let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
+        sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData));
+        response.write('received');
+      } catch (e) {
+        response.write('failed: \n' + e);
+        console.log(e);
+      } finally {
+        logging(request, start);
+        response.end();
+      }
     });
   }
 }).listen(serverPort);

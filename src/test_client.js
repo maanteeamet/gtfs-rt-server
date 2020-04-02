@@ -2,11 +2,11 @@
 let request = require('request');
 let path = require('path');
 let fs = require('fs');
-let filename = '../gtfs-rt-server/VehiclePositions.pb';
-let target = 'http://localhost:3333/' + path.basename(filename);
-// let target = 'https://mqtt.dev.peatus.ee/gtfs/upload' + path.basename(filename);
+let filename = '../VehiclePositions.pb';
+// let target = 'http://localhost:3333/' + path.basename(filename);
+let target = 'https://api.dev.peatus.ee/gtfs/upload/' + path.basename(filename);
 
-setInterval(()=>{
+setInterval(() => {
   let rs = fs.createReadStream(filename);
   let ws = request.post(target);
 
