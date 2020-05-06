@@ -13,21 +13,30 @@ class Rt_data_sync {
     this.mqttClient = mqtt.connect(this.clientUrl, opts);
   }
 
-  syncOtpAndGtfs(decodedGtfsData) {
+  syncOtpAndGtfs(decodedGtfsData, url) {
     console.log('Syncing OTP RT data to mqtt client ' + this.clientUrl);
-    new otp_match.OtpClient(this.handlePublish, {mqttClient: this.mqttClient}, this.otpUrl).connect(decodedGtfsData);
+    new otp_match.OtpClient(
+      this.handlePublish,
+      {mqttClient: this.mqttClient},
+      this.otpUrl,
+      url).
+    connect(decodedGtfsData);
   };
 
   handlePublish(msg, args) {
     let topic = mqtt_publisher.to_mqtt_topic(msg);
     let message = mqtt_publisher.to_mqtt_payload(msg);
-    args.mqttClient.publish(topic, JSON.stringify(message), function (err) {
-      if (err) {
-        console.log('Error happened when publishing: ' + err);
-      } else {
-        console.log("Publish was successful with topic: " + topic);
-      }
-    });
+    if(args.mqttClient.connected) {
+      args.mqttClient.publish(topic, JSON.stringify(message), function (err) {
+        if (err) {
+          console.log('Error happened when publishing: ' + err);
+        } else {
+          console.log("Publish was successful with topic: " + topic);
+        }
+      });
+    }else{
+      console.log('mqtt not connected');
+    }
   };
 }
 

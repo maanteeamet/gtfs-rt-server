@@ -3,20 +3,22 @@
   const request = require('request');
 
   module.exports.OtpClient = class OtpClient {
-    constructor(callback, args, otpUrl) {
+    constructor(callback, args, otpUrl, url) {
       this.callback = callback;
       this.args = args;
       this.routes = {
         "": {}
       };
       this.otpUrl = otpUrl;
+      this.url = url;
     }
 
     get_route_data_from_otp(info, update_location) {
       if (parseInt(info.id) === 0) {
         return;
       }
-      let bodyJson = {json: {query: '{ routes ( name: "' + info.id + '" ) { shortName gtfsId mode agency { name id } } }'}};
+      const modes = this.url.indexOf('VehiclePositions.pb') !== -1 ? 'modes: "RAIL", ' : '';
+      let bodyJson = {json: {query: '{ routes ( ' + modes + ' name: "' + info.id + '" ) { shortName gtfsId mode agency { name id } } }'}};
       request.post(this.otpUrl, bodyJson, (error, res, body) => {
         let self = this;
         if (error || !body.data) {
