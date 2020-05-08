@@ -43,6 +43,7 @@ http.createServer(function (request, response) {
     response.end();
     logging(request, start);
   } else if ("POST" === request.method) {
+    console.log(request);
     // Get all post data when receive data event.
     let data = []; // List of Buffer objects
     request.on('error', (err) => {
