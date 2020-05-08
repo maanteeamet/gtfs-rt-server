@@ -56,7 +56,7 @@ http.createServer(function (request, response) {
       data = Buffer.concat(data);
       try {
         let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
-        console.log('received from post: ', decodedGtfsData);
+        console.log('received from post: ', JSON.stringify(decodedGtfsData));
         sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData), request.url);
         response.write('received');
       } catch (e) {
