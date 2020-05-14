@@ -6,7 +6,7 @@ def send_to_mnt():
     print('saadan')
     url='https://api.dev.peatus.ee/gtfs/upload/' + filename
     r = requests.post(url, file)
-    print(r.text)
+    print(r.text, r.headers)
     print('saadetud')
     return
 

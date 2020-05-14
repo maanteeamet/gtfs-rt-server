@@ -17,8 +17,10 @@
       if (parseInt(info.id) === 0) {
         return;
       }
-      const modes = this.url.indexOf('VehiclePositions.pb') !== -1 ? 'modes: "RAIL", ' : '';
-      let bodyJson = {json: {query: '{ routes ( ' + modes + ' name: "' + info.id + '" ) { shortName gtfsId mode agency { name id } } }'}};
+      const isElron = this.url.indexOf('VehiclePositions') !== -1;
+      const modes = isElron ? 'modes: "RAIL", ' : '';
+      const name = isElron ? info.id : info.tripUpdate.trip.routeId;
+      let bodyJson = { json: { query: '{ routes ( ' + modes + ' name: "' + name + '" ) { shortName gtfsId mode agency { name id } } }' } };
       request.post(this.otpUrl, bodyJson, (error, res, body) => {
         let self = this;
         if (error || !body.data) {
@@ -28,10 +30,10 @@
         let routes = body.data.routes;
         if (routes.length > 0) {
           let otpRoutes = routes.filter(function (route) {
-            return (route.shortName === info.id);
+            return (route.shortName === name);
           });
           otpRoutes.forEach((route) => {
-            const tempInfo = {...info, type: route.mode.toLowerCase(), gtfsId: route.gtfsId, operator: route.agency};
+            const tempInfo = { ...info, type: route.mode.toLowerCase(), gtfsId: route.gtfsId, operator: route.agency };
             update_location(tempInfo, self);
           });
         }
@@ -42,6 +44,7 @@
       const date = new Date();
       let out_info;
 
+      const tripID = info.tripUpdate ? info.tripUpdate.trip.tripId : info.vehicle.trip.tripId;
       out_info = {
         vehicle: {
           id: info.vehicle.vehicle.id,
@@ -50,7 +53,7 @@
         },
         trip: {
           gtfsId: info.gtfsId.split(':')[1],
-          route: info.vehicle.trip.tripId,
+          route: tripID,
           direction: 0,
           operator: info.operator,
           headsign: info.lineNumber,

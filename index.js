@@ -17,8 +17,8 @@ let sync = new rt.rt_data_sync(mqttClient, otpurl);
 let serverPort = 3333;
 
 function logging(request, requestStart) {
-  const {rawHeaders, httpVersion, method, socket, url} = request;
-  const {remoteAddress, remoteFamily} = socket;
+  const { rawHeaders, httpVersion, method, socket, url } = request;
+  const { remoteAddress, remoteFamily } = socket;
 
   console.log(
     JSON.stringify({
@@ -35,41 +35,44 @@ function logging(request, requestStart) {
 }
 
 console.log('starting server');
-http.createServer(function (request, response) {
-  var start = new Date();
+try {
+  http.createServer(function (request, response) {
+    var start = new Date();
 
-  if ('GET' === request.method) {
-    response.write('Server is running.');
-    response.end();
-    logging(request, start);
-  } else if ("POST" === request.method) {
-    console.log(request);
-    // Get all post data when receive data event.
-    let data = []; // List of Buffer objects
-    request.on('error', (err) => {
-      console.error(err);
-    });
-    request.on('data', (chunk) => {
-      start = new Date();
-      data.push(chunk); // Append Buffer object
-    });
-    request.on('end', () => {
-      data = Buffer.concat(data);
-      try {
-        let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
-        console.log('received from post: ', JSON.stringify(decodedGtfsData));
-        sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData), request.url);
-        response.write('received');
-      } catch (e) {
-        response.write('failed: \n' + e);
-        console.log(e);
-      } finally {
-        logging(request, start);
-        response.end();
-      }
-    });
-  }
-}).listen(serverPort);
+    if ('GET' === request.method) {
+      response.write('Server is running.');
+      response.end();
+      logging(request, start);
+    } else if ("POST" === request.method) {
+      // Get all post data when receive data event.
+      let data = []; // List of Buffer objects
+      request.on('error', (err) => {
+        console.error(err);
+      });
+      request.on('data', (chunk) => {
+        start = new Date();
+        data.push(chunk); // Append Buffer object
+      });
+      request.on('end', () => {
+        data = Buffer.concat(data);
+        try {
+          let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
+          sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData), request.url);
+          response.write('received');
+        } catch (e) {
+          response.write('failed: \n' + e);
+          console.log(e);
+        } finally {
+          logging(request, start);
+          response.end();
+        }
+      });
+    }
+  }).listen(serverPort);
+  console.log('server up on port: ' + serverPort);
+} catch (e) {
+  console.log('Server Down');
+}
 
 
 
