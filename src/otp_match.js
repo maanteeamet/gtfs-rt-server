@@ -44,30 +44,29 @@
       const date = new Date();
       let out_info;
 
-
-
       const tripID = info.tripUpdate ? info.tripUpdate.trip.tripId : info.vehicle.trip.tripId;
-      const trip = info.tripUpdate ? info.tripUpdate : info;
+      const position = info.tripUpdate ? info.tripUpdate.vehicle.position : info.vehicle.position;
+      const vehicle = info.tripUpdate ? info.tripUpdate.vehicle.vehicle : info.vehicle.vehicle;
       out_info = {
         vehicle: {
-          id: trip.vehicle.vehicle.id,
-          label: trip.vehicle.vehicle.label,
-          type: trip.type
+          id: vehicle.id,
+          label: vehicle.label,
+          type: info.type
         },
         trip: {
-          gtfsId: trip.gtfsId.split(':')[1],
+          gtfsId: info.gtfsId.split(':')[1],
           route: tripID,
           direction: 0,
-          operator: trip.operator,
-          headsign: trip.lineNumber,
+          operator: info.operator,
+          headsign: info.lineNumber,
           start_time: ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
         },
         position: {
-          latitude: trip.vehicle.position.latitude,
-          longitude: trip.vehicle.position.longitude,
+          latitude: position.latitude,
+          longitude: position.longitude,
           //odometer: parseFloat info.distance_from_start
-          speed: trip.vehicle.position.speed / 3.6,
-          bearing: trip.vehicle.position.heading
+          speed: position.speed / 3.6,
+          bearing: position.heading
         },
         //delay: -(parseFloat info.difference_from_timetable)
         timestamp: new Date().getTime() / 1000
