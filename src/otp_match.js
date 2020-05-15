@@ -46,31 +46,34 @@
 
       const tripID = info.tripUpdate ? info.tripUpdate.trip.tripId : info.vehicle.trip.tripId;
       const position = info.tripUpdate ? info.position : info.vehicle.position;
-      console.log(info);
-      out_info = {
-        vehicle: {
-          id: info.vehicle.vehicle.id,
-          label: info.vehicle.vehicle.label,
-          type: info.type
-        },
-        trip: {
-          gtfsId: info.gtfsId.split(':')[1],
-          route: tripID,
-          direction: 0,
-          operator: info.operator,
-          headsign: info.lineNumber,
-          start_time: ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
-        },
-        position: {
-          latitude: position.latitude,
-          longitude: position.longitude,
-          //odometer: parseFloat info.distance_from_start
-          speed: position.speed / 3.6,
-          bearing: position.heading
-        },
-        //delay: -(parseFloat info.difference_from_timetable)
-        timestamp: new Date().getTime() / 1000
-      };
+      try {
+        out_info = {
+          vehicle: {
+            id: info.vehicle.vehicle.id,
+            label: info.vehicle.vehicle.label,
+            type: info.type
+          },
+          trip: {
+            gtfsId: info.gtfsId.split(':')[1],
+            route: tripID,
+            direction: 0,
+            operator: info.operator,
+            headsign: info.lineNumber,
+            start_time: ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
+          },
+          position: {
+            latitude: position.latitude,
+            longitude: position.longitude,
+            //odometer: parseFloat info.distance_from_start
+            speed: position.speed / 3.6,
+            bearing: position.heading
+          },
+          //delay: -(parseFloat info.difference_from_timetable)
+          timestamp: new Date().getTime() / 1000
+        };
+      }catch (e) {
+        console.log(e);
+      }
       return self.callback(out_info, self.args);
     }
 
