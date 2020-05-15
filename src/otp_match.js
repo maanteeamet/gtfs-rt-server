@@ -45,6 +45,7 @@
       let out_info;
 
       const tripID = info.tripUpdate ? info.tripUpdate.trip.tripId : info.vehicle.trip.tripId;
+      console.log(info.vehicle, info.vehicle.position);
       out_info = {
         vehicle: {
           id: info.vehicle.vehicle.id,
