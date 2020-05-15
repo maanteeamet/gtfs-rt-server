@@ -15,12 +15,15 @@ class Rt_data_sync {
 
   syncOtpAndGtfs(decodedGtfsData, url) {
     console.log('Syncing OTP RT data to mqtt client ' + this.clientUrl);
-    new otp_match.OtpClient(
-      this.handlePublish,
-      {mqttClient: this.mqttClient},
-      this.otpUrl,
-      url).
-    connect(decodedGtfsData);
+    try {
+      new otp_match.OtpClient(
+        this.handlePublish,
+        { mqttClient: this.mqttClient },
+        this.otpUrl,
+        url).connect(decodedGtfsData);
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   handlePublish(msg, args) {

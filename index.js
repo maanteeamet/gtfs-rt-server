@@ -57,6 +57,7 @@ try {
         data = Buffer.concat(data);
         try {
           let decodedGtfsData = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(data);
+          console.log('retrieved from post: ', decodedGtfsData);
           sync.syncOtpAndGtfs(JSON.stringify(decodedGtfsData), request.url);
           response.write('received');
         } catch (e) {
