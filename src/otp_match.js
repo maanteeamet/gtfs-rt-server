@@ -45,8 +45,8 @@
       let out_info;
 
       const tripID = info.tripUpdate ? info.tripUpdate.trip.tripId : info.vehicle.trip.tripId;
-      const position = info.tripUpdate ? info.tripUpdate.vehicle.position : info.vehicle.position;
       const vehicle = info.tripUpdate ? info.tripUpdate.vehicle.vehicle : info.vehicle.vehicle;
+      console.log('position', info.vehicle.position);
       out_info = {
         vehicle: {
           id: vehicle.id,
@@ -62,11 +62,11 @@
           start_time: ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
         },
         position: {
-          latitude: position.latitude,
-          longitude: position.longitude,
+          latitude: info.vehicle.position.latitude,
+          longitude: info.vehicle.position.longitude,
           //odometer: parseFloat info.distance_from_start
-          speed: position.speed / 3.6,
-          bearing: position.heading
+          speed: info.vehicle.position.speed / 3.6,
+          bearing: info.vehicle.position.heading
         },
         //delay: -(parseFloat info.difference_from_timetable)
         timestamp: new Date().getTime() / 1000
