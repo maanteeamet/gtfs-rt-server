@@ -19,7 +19,7 @@
     "moment": "~2.20.1",
     "moment-timezone": "~0.5.14",
     "gtfs-realtime-bindings": "0.0.5",
-    "protobufjs": "^6.8.8",
+    "protobufjs": "^6.11.3",
     "request": "^2.88.0",
     "mosca": "^2.8.3",
     "mqtt": "^2.18.8",
