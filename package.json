@@ -17,7 +17,7 @@
   "dependencies": {
     "fs": "0.0.1-security",
     "moment": "~2.20.1",
-    "moment-timezone": "~0.5.14",
+    "moment-timezone": "~0.5.35",
     "gtfs-realtime-bindings": "0.0.5",
     "protobufjs": "^6.8.8",
     "request": "^2.88.0",
